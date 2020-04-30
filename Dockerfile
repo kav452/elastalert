@@ -1,5 +1,5 @@
-FROM alpine:latest as py-ea
-ARG ELASTALERT_VERSION=v0.2.0b2
+FROM alpine:3.8 as py-ea
+ARG ELASTALERT_VERSION=v0.1.39
 ENV ELASTALERT_VERSION=${ELASTALERT_VERSION}
 # URL from which to download Elastalert.
 ARG ELASTALERT_URL=https://github.com/Yelp/elastalert/archive/$ELASTALERT_VERSION.zip
@@ -27,9 +27,9 @@ RUN sed -i 's/jira>=1.0.10/jira>=1.0.10,<1.0.15/g' setup.py && \
 FROM node:alpine
 LABEL maintainer="BitSensor <dev@bitsensor.io>"
 # Set timezone for this container
-ENV TZ Etc/UTC
+ENV TZ Europe/Moscow
 
-RUN apk add --update --no-cache curl tzdata python2 make libmagic
+RUN apk add --update --no-cache curl tzdata python2 make libmagic mc
 
 COPY --from=py-ea /usr/lib/python2.7/site-packages /usr/lib/python2.7/site-packages
 COPY --from=py-ea /opt/elastalert /opt/elastalert
